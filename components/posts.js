@@ -53,7 +53,7 @@ export default function Posts({ posts }) {
       // updating likeCount and like state
       updatedPost.likes = updatedPost.likes + (updatedPost.isLiked ? -1 : 1);
       updatedPost.isLiked = !updatedPost.isLiked;
-      // creating a new postList to return
+      // creating a new postList to return (immutable method)
       const newPosts = [...prevPosts];
       // adding the updatedPost to the postList
       newPosts[updatedPostIndex] = updatedPost;

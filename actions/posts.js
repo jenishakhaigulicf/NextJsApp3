@@ -1,4 +1,5 @@
 "use server";
+import { uploadImage } from "@/lib/cloudinary";
 import { storePost, updatePostLikeStatus } from "@/lib/posts";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -27,13 +28,21 @@ export async function createPost(prevState, formData) {
     };
   }
 
+  let imageUrl;
+  try {
+    imageUrl = await uploadImage(image);
+  } catch (e) {
+    throw new Error("image upload failed, please try again");
+  }
+
   await storePost({
-    imageUrl: "",
+    imageUrl,
     title,
     content,
     userId: 1,
   });
 
+  revalidatePath("/", "layouts");
   redirect("/feed");
 }
 // configuring server action
